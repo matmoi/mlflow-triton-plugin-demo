@@ -13,6 +13,15 @@ The [mlflow-triton-plugin](https://github.com/triton-inference-server/server/tre
 - Python
 - Docker + docker-compose
 - [asdf](https://asdf-vm.com/) (recommanded - to setup a dev environment without the hassle)
+- [nvidia-container-toolkit](https://github.com/NVIDIA/nvidia-container-toolkit) (optional - for GPU accelerated inference)
+
+`asdf` requires the following plugins :
+```
+asdf plugin-add python
+asdf plugin-add direnv
+```
+
+Note that additional steps might be required to setup direnv properly, please refer to this [link](https://github.com/asdf-community/asdf-direnv) for further instructions. Be aware that restarting your shell session might be required after installing direnv for the first time.
 
 ## Architecture
 
@@ -24,7 +33,16 @@ The user space defines the development environment used by a human operator. It 
 
 ## Instructions
 
-1. Install dependencies
+1. Setup environment
+
+If using asdf :
+```
+asdf install
+```
+
+Otherwise, python must be installed separatly and environment variables from `.env` must be set accordingly.
+
+2. Install dependencies
 
 A good practice is to use a virtualenv to isolate this project from the host. Using asdf+direnv plugin would do that for you seamlessly.
 
@@ -32,14 +50,18 @@ A good practice is to use a virtualenv to isolate this project from the host. Us
 python -m pip install -r requirements.txt
 ```
 
-2. Start docker services
+3. Start docker containers
 
 ```
-docker compose up
+docker compose -f docker-compose.yml up
 ```
 
-3. Run jupyter notebook and follows instructions
+To take advantage of an nvidia GPU, use `docker compose -f docker-compose.yml -f docker-compose-nvidia.yml up` instead.
+
+4. Run jupyter notebook and follows instructions
+
+Choose one of the experimentation notebooks, and run it with :
 
 ```
-python -m jupyter lab experiment_1.ipynb
+python -m jupyter lab experiment_elasticnet.ipynb
 ```

@@ -1,12 +1,11 @@
+git+https://github.com/triton-inference-server/server.git@v2.45.0#subdirectory=deploy/mlflow-triton-plugin
 jupyterlab
 mlflow==2.12.1
-setuptools
-psutil
-torch
 onnx
-torchvision
 onnxruntime
+psutil
+python-dotenv
+setuptools
 skl2onnx
 tritonclient[all]
-git+https://github.com/triton-inference-server/server.git@v2.45.0#subdirectory=deploy/mlflow-triton-plugin
-python-dotenv
+opencv-python-headless
