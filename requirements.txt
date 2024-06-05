@@ -9,3 +9,4 @@ setuptools
 skl2onnx
 tritonclient[all]
 opencv-python-headless
+tqdm

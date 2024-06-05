@@ -64,9 +64,11 @@ services:
         condition: service_healthy
       triton:
         condition: service_started
+      minio-create-bucket-artifacts-if-not-exists:
+        condition: service_started
 
   triton:
-    image: nvcr.io/nvidia/tritonserver:24.04-py3
+    image: nvcr.io/nvidia/tritonserver:24.05-py3
     ports:
       - ${TRITON_PORT_HTTP}:8000
       - ${TRITON_PORT_GRPC}:8001
@@ -75,7 +77,9 @@ services:
     environment:
       AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER}
       AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD}
-
+    depends_on:
+      minio-create-bucket-models-if-not-exists:
+        condition: service_started
 
   prometheus:
     image: prom/prometheus
@@ -92,7 +96,8 @@ services:
     ports:
       - ${GRAFANA_PORT_WEBUI}:3000
     volumes:
-      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
     depends_on:
       prometheus:
         condition: service_started
